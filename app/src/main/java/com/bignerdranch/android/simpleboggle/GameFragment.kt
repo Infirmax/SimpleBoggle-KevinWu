@@ -180,17 +180,17 @@ class GameFragment : Fragment() {
 
         when {
             word.isEmpty() || word == "User Input" -> showToast("Please enter a word.")
-            word.length < 4 -> showToast("Word must be at least 4 characters long")
+            word.length < 4 -> showToast("Word must consist of at least 4 letters")
             !isValidWord(word) -> {
-                showToast("Invalid word. Please enter a valid English word.")
+                showToast("Please enter a valid English word.")
                 deductPoints(10) // Deduct 10 points for incorrect word
             }
-            word.count { it in "AEIOU" } < 2 -> showToast("Word must contain at least two vowels")
-            word in submittedWords -> showToast("Word already submitted")
+            word.count { it in "AEIOU" } < 2 -> showToast("Must contain at least two vowels")
+            word in submittedWords -> showToast("Word already entered")
             else -> {
                 submittedWords.add(word) // Add the word to the set of submitted words
                 val wordScore = calculateScore(word)
-                showToast(if (wordScore > 0) "That's correct! +$wordScore" else "That's incorrect. -10")
+                showToast(if (wordScore > 0) "Correct! +$wordScore" else "Incorrect. -10")
                 gameFragmentListener.onSubmitWord(word)
                 if (wordScore > 0) addPoints(wordScore) else deductPoints(10)
                 clearInput()
