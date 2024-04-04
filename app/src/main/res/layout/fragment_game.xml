@@ -10,12 +10,12 @@
         android:id="@+id/instructionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter a word then hit submit"
-        android:textColor="#000000"
-        android:textSize="16sp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"/>
+        android:text="Boggle!"
+        android:textColor="#000000"
+        android:textSize="24sp" />
 
     <GridLayout
         android:id="@+id/gridLayout"

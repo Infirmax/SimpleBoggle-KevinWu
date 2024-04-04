@@ -50,41 +50,17 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Initialize buttons
-        buttons = listOf(
-            view.findViewById(R.id.button1),
-            view.findViewById(R.id.button2),
-            view.findViewById(R.id.button3),
-            view.findViewById(R.id.button4),
-            view.findViewById(R.id.button5),
-            view.findViewById(R.id.button6),
-            view.findViewById(R.id.button7),
-            view.findViewById(R.id.button8),
-            view.findViewById(R.id.button9),
-            view.findViewById(R.id.button10),
-            view.findViewById(R.id.button11),
-            view.findViewById(R.id.button12),
-            view.findViewById(R.id.button13),
-            view.findViewById(R.id.button14),
-            view.findViewById(R.id.button15),
-            view.findViewById(R.id.button16)
-        )
-
-        // Set onClickListener for each button
-        for (button in buttons) {
-            button.setOnClickListener {
-                buttonClick(button)
+        buttons = (1..16).map { id ->
+            view.findViewById<Button>(resources.getIdentifier("button$id", "id", context?.packageName)).apply {
+                setOnClickListener { buttonClick(this) }
             }
         }
 
-        // Set onClickListener for clear button
-        val clearButton = view.findViewById<Button>(R.id.clear_button)
-        clearButton.setOnClickListener {
+        view.findViewById<Button>(R.id.clear_button).setOnClickListener {
             clearInput()
         }
 
-        // Set onClickListener for submit button
-        val submitButton = view.findViewById<Button>(R.id.submit_button)
-        submitButton.setOnClickListener {
+        view.findViewById<Button>(R.id.submit_button).setOnClickListener {
             submitInput()
         }
 
@@ -146,10 +122,8 @@ class GameFragment : Fragment() {
         val consonants = ('A'..'Z').filterNot { it in vowels }
         val randomLetters = mutableListOf<Char>()
 
-        // Add 3 unique random vowels
         randomLetters += vowels.shuffled().take(3)
 
-        // Add 13 random consonants, allowing repeats
         randomLetters += List(13) { consonants.random() }
 
         return randomLetters.shuffled()
@@ -225,14 +199,17 @@ class GameFragment : Fragment() {
     }
 
 
-    private fun deductPoints(points: Int) {
-        score = maxOf(score - points, 0) // Deduct points, but ensure the score doesn't go negative
+    private fun updateScore(newScore: Int) {
+        score = newScore
         gameFragmentListener.onScoreUpdated(score)
     }
 
+    private fun deductPoints(points: Int) {
+        updateScore(maxOf(score - points, 0))
+    }
+
     private fun addPoints(points: Int) {
-        score += points // Add points to the score
-        gameFragmentListener.onScoreUpdated(score) // Update the score in the ScoreFragment
+        updateScore(score + points)
     }
 
     private fun calculateScore(word: String): Int {

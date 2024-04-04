@@ -43,25 +43,19 @@ class MainActivity : AppCompatActivity(), GameFragment.GameFragmentListener, Sco
         }
     }
 
-
+    override fun onNewGame() {
+        Toast.makeText(this, "New game started", Toast.LENGTH_SHORT).show()
+        gameFragment.resetSubmittedWords()
+        gameFragment.initializeButtons()
+    }
     override fun onSubmitWord(word: String) {
         // Handle word submission, perform database operations, update score, etc.
         Toast.makeText(this, "Word submitted: $word", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onNewGame() {
-        // Handle new game action, reset score, clear previous submissions, generate new letters, etc.
-        Toast.makeText(this, "New game started", Toast.LENGTH_SHORT).show()
 
-        // Reset the submitted words set in the GameFragment
-        gameFragment.resetSubmittedWords()
-
-        // Initialize new letters in the game board
-        gameFragment.initializeButtons()
-    }
 
     override fun onScoreUpdated(score: Int) {
-        // Update score in ScoreFragment
         scoreFragment.updateScore(score)
     }
 }

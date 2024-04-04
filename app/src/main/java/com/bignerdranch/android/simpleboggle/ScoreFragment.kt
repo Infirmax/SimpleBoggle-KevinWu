@@ -47,7 +47,7 @@ class ScoreFragment : Fragment() {
     }
 
     fun updateDisplayedScore() {
-        val scoreTextView = view?.findViewById<TextView>(R.id.scoreTextView)
-        scoreTextView?.text = "Score: $score"
+        view?.findViewById<TextView>(R.id.scoreTextView)?.text = "Score: $score"
+
     }
 }
