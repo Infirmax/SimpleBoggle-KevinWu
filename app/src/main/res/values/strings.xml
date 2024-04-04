@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Simple Boggle</string>
+    <string name="score">Points: </string>
+    <string name="new_game">Create New Game</string>
 </resources>

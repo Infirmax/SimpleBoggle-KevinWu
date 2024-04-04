@@ -46,10 +46,25 @@ class GameFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_game, container, false)
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun initializeDictionary() {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                // Download dictionary from the URL
+                val dictionaryText = downloadDictionary()
+
+                // Parse and store dictionary words
+                dictionary = parseDictionary(dictionaryText)
+            } catch (e: IOException) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Failed to download dictionary", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize buttons
         buttons = (1..16).map { id ->
             view.findViewById<Button>(resources.getIdentifier("button$id", "id", context?.packageName)).apply {
                 setOnClickListener { buttonClick(this) }
@@ -68,22 +83,7 @@ class GameFragment : Fragment() {
         initializeDictionary()
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun initializeDictionary() {
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                // Download dictionary from the URL
-                val dictionaryText = downloadDictionary()
 
-                // Parse and store dictionary words
-                dictionary = parseDictionary(dictionaryText)
-            } catch (e: IOException) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Failed to download dictionary", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
 
     private fun downloadDictionary(): String {
         val okHttpClient = OkHttpClient()
