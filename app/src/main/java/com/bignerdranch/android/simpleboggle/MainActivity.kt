@@ -10,8 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity(), GameFragment.GameFragmentListener, ScoreFragment.ScoreFragmentListener {
 
+
+
     private lateinit var gameFragment: GameFragment
     private lateinit var scoreFragment: ScoreFragment
+
     private lateinit var sensorManager: SensorManager
     private lateinit var shakeDetector: ShakeDetector
 
@@ -19,17 +22,10 @@ class MainActivity : AppCompatActivity(), GameFragment.GameFragmentListener, Sco
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupFragments()
+        setUp()
         shakeDetector()
     }
 
-    private fun setupFragments() {
-        gameFragment = supportFragmentManager.findFragmentById(R.id.game_fragment) as GameFragment
-        scoreFragment = supportFragmentManager.findFragmentById(R.id.score_fragment) as ScoreFragment
-
-        gameFragment.setListener(this)
-        scoreFragment.setListener(this)
-    }
 
     private fun shakeDetector() {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -42,6 +38,15 @@ class MainActivity : AppCompatActivity(), GameFragment.GameFragmentListener, Sco
             }
         }
     }
+    private fun setUp() {
+        gameFragment = supportFragmentManager.findFragmentById(R.id.game_fragment) as GameFragment
+        scoreFragment = supportFragmentManager.findFragmentById(R.id.score_fragment) as ScoreFragment
+
+        gameFragment.setListener(this)
+        scoreFragment.setListener(this)
+    }
+
+
 
     override fun onNewGame() {
         Toast.makeText(this, "New game started", Toast.LENGTH_SHORT).show()
@@ -49,7 +54,6 @@ class MainActivity : AppCompatActivity(), GameFragment.GameFragmentListener, Sco
         gameFragment.initializeButtons()
     }
     override fun onSubmitWord(word: String) {
-        // Handle word submission, perform database operations, update score, etc.
         Toast.makeText(this, "Word submitted: $word", Toast.LENGTH_SHORT).show()
     }
 
